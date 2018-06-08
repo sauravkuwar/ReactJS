@@ -1,0 +1,9 @@
+FolderName: 'template1'
+name: 'Control Element'
+description: 'Editable sections in the template'
+author: Basu Regami
+homepage: 'http://basu.com'
+header: 'true'
+footer: 'true'
+home_page: 'true'
+contact_page: 'true'
