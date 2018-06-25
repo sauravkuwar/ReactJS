@@ -1,50 +1,45 @@
 import React, { Component } from "react";
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { connect } from 'react-redux'
 
 import "./Login.css";
 
-export default class Login extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            email: "",
-            password: ""
-        };
     }
 
     validateForm() {
-        return this.state.email.length > 0 && this.state.password.length > 0;
+        return this.props.email.length > 0;
     }
 
-    handleChange = event => {
-        this.setState({
-            [event.target.id]: event.target.value
-        });
+    handleEmailChange = event => {
+        this.props.onEmailChange(event.target.value);
     }
 
     handleSubmit = event => {
         event.preventDefault();
+        alert('Login successful');
+        this.props.onSuccessLoginIncrementCounter();
     }
 
     render() {
         return (
             <div className="Login">
+                <h1>Login count: {this.props.count}</h1>
                 <form onSubmit={this.handleSubmit}>
                     <FormGroup controlId="email" bsSize="large">
                         <ControlLabel>Email</ControlLabel>
                         <FormControl
                             autoFocus
                             type="email"
-                            value={this.state.email}
-                            onChange={this.handleChange}
+                            value={this.props.email}
+                            onChange={this.handleEmailChange}
                         />
                     </FormGroup>
                     <FormGroup controlId="password" bsSize="large">
                         <ControlLabel>Password</ControlLabel>
                         <FormControl
-                            value={this.state.password}
-                            onChange={this.handleChange}
                             type="password"
                         />
                     </FormGroup>
@@ -61,3 +56,20 @@ export default class Login extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => ({
+    ...state
+})
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    onSuccessLoginIncrementCounter: () => {
+        dispatch({type:"LOGIN_COUNT"});
+    },
+    onEmailChange: (email) => {
+        dispatch({type:"UPDATE_EMAIL", email});
+    }
+})
+
+Login = connect(mapStateToProps, mapDispatchToProps)(Login)
+
+export default Login;
